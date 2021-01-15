@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div class="jumbotron">
+        <center><h1>Content Aggregator</h1>
+            <a href="{% url 'Newsapp:aggregrate' %}" class="btn btn-success">Get latest news</a>
+
+            <h4>Logged in as: {{ request.user }}</h4>
+            <a class="btn btn-primary" href="{% url 'Newsapp:logout' %}">Logout</a>
+
+    </center>
+    </div>
+
+
+    <div>
+        {% for Topic in Topics %}
+            <h5>{{ Topic }}</h5>
+            <form method="post" action="{% url 'Newsapp:subscribe' %}">
+            {% csrf_token %}
+
+
+{#      {% if Topic.subscribed == True %}#}
+{#          <button#}
+{#    type="submit"#}
+{#    class="btn attendBtn btn-dark"#}
+{#    value="{{ Topic.id }}"#}
+{#    name="topic">#}
+{##}
+{##}
+{#        Subscribed#}
+{#    </button>#}
+
+
+{#      {% else %}#}
+
+          <button
+    type="submit"
+    class="btn attendBtn btn-danger"
+    value="{{ Topic.id }}"
+    name="topic">
+
+      Subscribe Now
+{#       {% endif %}#}
+
+  </button>
+ </form>
+
+
+
+
+
+
+
+             <form method="post" action="{% url 'Newsapp:unsubscribe' %}">
+            {% csrf_token %}
+
+
+
+          <button
+    type="submit"
+    class="btn attendBtn btn-dark"
+    value="{{ Topic.id }}"
+    name="topic">
+
+
+        Unsubscribe
+    </button>
+
+
+
+ </form>
+
+
+
+
+
+
+
+        {% endfor %}
+
+    </div>
+  <div class="card-columns" style="padding: 10px; margin: 20px;">
+    {% for object in object_list %}
+        {%for subs in object.topic.subscriber.all %}
+
+        {% if subs == request.user %}
+
+
+
+
+
+    <div class="card" style="width: 18rem;border:5px black solid;">
+  <img class="card-img-top" src = "{{ object.image }}">
+  <div class="card-body">
+    <h5 class="card-title"><div class="card-body">
+
+        <br> <br>
+        <a href="{{object.url}}"><h5 class="card-title">{{object.title}}</h5></a>
+
+{#      <form method="get">#}
+{#          {% csrf_token %}#}
+{#  <button#}
+{#    type="submit"#}
+{#    class="btn attendBtn"#}
+{#    value="{{object.topic}}"#}
+{#    name="attend">attend#}
+{#  </button>#}
+{# </form>#}
+    </div></h5>
+    </div>
+  </div>
+        {% endif %}
+  {% endfor %}
+  {% endfor %}
+</div>
+</div>
+    <script
+src="http://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
